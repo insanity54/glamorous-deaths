@@ -1,6 +1,9 @@
 --[[
-death_messages - A Minetest mod which sends a chat message when a player dies.
-Copyright (C) 2016  EvergreenTree
+Glamorous Deaths - Announce players' deaths server-wide with
+colorful messages
+
+Copyright (C) 2022 Brett Cornwall
+Copyright (C) 2016 EvergreenTree
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -13,15 +16,15 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --]]
 
 --------------------------------------------------------------------------------
-local title = "Death Messages"
-local version = "0.1.4"
-local mname = "death_messages"
+local title = "Glamorous Deaths"
+local version = "0.1.0"
+local mname = "glamorous_deaths"
 --------------------------------------------------------------------------------
-dofile(minetest.get_modpath("death_messages").."/settings.txt")
+dofile(minetest.get_modpath("glamorous_deaths").."/settings.txt")
 --------------------------------------------------------------------------------
 
 -- A table of quips for death messages.  The first item in each sub table is the
