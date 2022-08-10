@@ -68,9 +68,8 @@ messages.punch = {
     " got hit hard."
 }
 
-messages.other = {
-    " died.",
-    " did something fatal.",
+messages.node = {
+    " got fatally injured by "
 }
 
 function get_message(mtype)
@@ -81,24 +80,40 @@ function get_message(mtype)
     end
 end
 
+local function tchelper(first, rest)
+   return first:upper()..rest:lower()
+end
+
 minetest.register_on_dieplayer(function(player, reason)
     local player_name = player:get_player_name()
     local node = minetest.registered_nodes[
         minetest.get_node(player:getpos()).name
     ]
+
     if minetest.is_singleplayer() then
         player_name = "You"
     end
-    -- Death by lava
-    if node.groups.lava ~= nil then
-        minetest.chat_send_all(player_name .. get_message("lava"))
-    -- Death by drowning
-    elseif player:get_breath() == 0 then
+
+    if reason["type"] == "node_damage" then
+        if reason["node"] == "default:lava_source" then
+            minetest.chat_send_all(player_name .. get_message("lava"))
+        elseif reason["node"] == "fire:basic_flame" then
+            minetest.chat_send_all(player_name .. get_message("fire"))
+        else
+            -- Try to make something out of the node that killed the player as
+            -- a last-ditch effort. Strip the mod name from the item and
+            -- sentence-case it to make it seem a little more natural.
+            node_mod, node_name = string.match(reason["node"], "(.*):(.*)")
+            node_name_pretty = string.gsub(node_name, "_", " ")
+            node_name_pretty = node_name_pretty:gsub("(%a)([%w_']*)", tchelper)
+            minetest.chat_send_all(
+                player_name .. get_message("node") .. node_name_pretty .. "."
+            )
+        end
+    elseif reason["type"] == "drown" then
         minetest.chat_send_all(player_name .. get_message("water"))
-    -- Death by fire
-    elseif node.name == "fire:basic_flame" then
-        minetest.chat_send_all(player_name .. get_message("fire"))
-    -- Death by something else
+    elseif reason["type"] == "fall" then
+        minetest.chat_send_all(player_name .. get_message("fall"))
     else
         minetest.chat_send_all(player_name .. " died.")
     end
