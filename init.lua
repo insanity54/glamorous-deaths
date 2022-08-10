@@ -19,54 +19,58 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --]]
 
---------------------------------------------------------------------------------
 local title = "Glamorous Deaths"
 local version = "0.1.0"
-local mname = "glamorous_deaths"
---------------------------------------------------------------------------------
-dofile(minetest.get_modpath("glamorous_deaths").."/settings.txt")
---------------------------------------------------------------------------------
+local mname = minetest.get_current_modname()
 
--- A table of quips for death messages.  The first item in each sub table is the
--- default message used when RANDOM_MESSAGES is disabled.
+dofile(minetest.get_modpath(mname).."/settings.txt")
+
+-- A table of quips for death messages. The first item in each sub table is
+-- the default message used when RANDOM_MESSAGES is disabled.
 local messages = {}
 
--- Lava death messages
+-- These messages must make sense for both “You […]” and “SomePlayerName […]”
+
 messages.lava = {
-    " melted into a ball of fire.",
-    " thought lava was cool.",
-    " melted into a ball of fire.",
-    " couldn't resist that warm glow of lava.",
-    " dug straight down.",
-    " didn't know lava was hot."
+    " melted into a puddle.",
+    " got a little too close to lava.",
+    " burned up in lava.",
+    " turned into molten slag.",
 }
 
--- Drowning death messages
 messages.water = {
     " drowned.",
-    " ran out of air.",
-    " failed at swimming lessons.",
-    " tried to impersonate an anchor.",
-    " forgot he wasn't a fish.",
-    " blew one too many bubbles."
+    " struggled for air.",
+    " suffocated.",
+    " ran out of oxygen.",
+    " should have worn a lifejacket.",
 }
 
--- Burning death messages
 messages.fire = {
     " burned to a crisp.",
-    " got a little too warm.",
-    " got too close to the camp fire.",
-    " just got roasted, hotdog style.",
-    " got burned up. More light that way."
+    " burned up.",
+    " didn't stop, drop, and roll.",
+    " got roasted like a marshmallow.",
+    " got barbecued.",
+    " got toasty.",
+    " got roasted.",
+    " played with fire.",
 }
 
--- Other death messages
+messages.fall = {
+    " fell.",
+    " had a tumble.",
+    " lost footing.",
+    " went splat.",
+}
+
+messages.punch = {
+    " got hit hard."
+}
+
 messages.other = {
     " died.",
     " did something fatal.",
-    " gave up on life.",
-    " is somewhat dead now.",
-    " passed out -permanently."
 }
 
 function get_message(mtype)
@@ -77,7 +81,7 @@ function get_message(mtype)
     end
 end
 
-minetest.register_on_dieplayer(function(player)
+minetest.register_on_dieplayer(function(player, reason)
     local player_name = player:get_player_name()
     local node = minetest.registered_nodes[
         minetest.get_node(player:getpos()).name
@@ -96,11 +100,9 @@ minetest.register_on_dieplayer(function(player)
         minetest.chat_send_all(player_name .. get_message("fire"))
     -- Death by something else
     else
-        minetest.chat_send_all(player_name .. get_message("other"))
+        minetest.chat_send_all(player_name .. " died.")
     end
 
 end)
 
---------------------------------------------------------------------------------
-print("[Mod] "..title.." ["..version.."] ["..mname.."] Loaded...")
---------------------------------------------------------------------------------
+print("[Mod] "..title.." ["..version.."] ["..mname.."] loaded.")
