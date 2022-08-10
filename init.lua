@@ -69,7 +69,7 @@ messages.punch = {
 }
 
 messages.node = {
-    " got fatally injured by "
+    " got killed by "
 }
 
 function get_message(mtype)
