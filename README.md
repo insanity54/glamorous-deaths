@@ -11,7 +11,7 @@ the finest message available for each particular death.
 
 ## License
 
-GPLv3 (see COPYING)
+GPLv3 (see [COPYING](COPYING))
 
 ## Installation
 
