@@ -95,9 +95,9 @@ minetest.register_on_dieplayer(function(player, reason)
     end
 
     if reason["type"] == "node_damage" then
-        if reason["node"] == "default:lava_source" then
+        if reason["node"]:find("lava") then
             minetest.chat_send_all(player_name .. get_message("lava"))
-        elseif reason["node"] == "fire:basic_flame" then
+        elseif reason["node"]:match("fire") or reason["node"]:match("flame") then
             minetest.chat_send_all(player_name .. get_message("fire"))
         else
             -- Try to make something out of the node that killed the player as
