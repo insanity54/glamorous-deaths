@@ -72,7 +72,7 @@ messages.killed_by = {
     " died by ",
 }
 
-function get_message(mtype)
+local function get_message(mtype)
     if RANDOM_MESSAGES then
         return messages[mtype][math.random(1, #messages[mtype])]
     else
