@@ -68,8 +68,8 @@ messages.punch = {
     " got hit hard."
 }
 
-messages.node = {
-    " got killed by "
+messages.killed_by = {
+    " died by ",
 }
 
 function get_message(mtype)
@@ -115,7 +115,7 @@ minetest.register_on_dieplayer(function(player, reason)
                     player_name .. get_message("killed_by") .. obj_name_pretty .. "."
                 )
             else
-                minetest.chat_send_all(player_name .. get_message(" died."))
+                minetest.chat_send_all(player_name .. " died.")
             end
 
         end
