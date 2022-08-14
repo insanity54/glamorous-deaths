@@ -84,6 +84,15 @@ local function tchelper(first, rest)
    return first:upper()..rest:lower()
 end
 
+local function get_pretty_obj_name(input)
+    -- Split/Title case a "mod:name" string
+    local _, obj = string.match(input, "(.*):(.*)")
+    local name_pretty = string.gsub(obj, "_", " ")
+    name_pretty = name_pretty:gsub("(%a)([%w_']*)", tchelper)
+
+    return name_pretty
+end
+
 minetest.register_on_dieplayer(function(player, reason)
     local player_name = player:get_player_name()
 
@@ -100,17 +109,31 @@ minetest.register_on_dieplayer(function(player, reason)
             -- Try to make something out of the node that killed the player as
             -- a last-ditch effort. Strip the mod name from the item and
             -- sentence-case it to make it seem a little more natural.
-            node_mod, node_name = string.match(reason["node"], "(.*):(.*)")
-            node_name_pretty = string.gsub(node_name, "_", " ")
-            node_name_pretty = node_name_pretty:gsub("(%a)([%w_']*)", tchelper)
-            minetest.chat_send_all(
-                player_name .. get_message("node") .. node_name_pretty .. "."
-            )
+            if reason["node"] ~= nil then
+                local obj_name_pretty = get_pretty_obj_name(reason["node"])
+                minetest.chat_send_all(
+                    player_name .. get_message("killed_by") .. obj_name_pretty .. "."
+                )
+            else
+                minetest.chat_send_all(player_name .. get_message(" died."))
+            end
+
         end
     elseif reason["type"] == "drown" then
         minetest.chat_send_all(player_name .. get_message("water"))
     elseif reason["type"] == "fall" then
         minetest.chat_send_all(player_name .. get_message("fall"))
+    elseif reason["type"] == "punch" then
+        local killer_obj = reason["object"]
+        local killer_name = killer_obj:get_luaentity().name
+        if killer_name ~= nil then
+            local obj_name_pretty = get_pretty_obj_name(killer_name)
+            minetest.chat_send_all(
+                player_name .. get_message("killed_by") .. obj_name_pretty .. "."
+            )
+        else
+            minetest.chat_send_all(player_name .. get_message("punch"))
+        end
     else
         minetest.chat_send_all(player_name .. " died.")
     end
