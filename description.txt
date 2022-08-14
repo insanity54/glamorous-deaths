@@ -1,1 +1,0 @@
-Announce players' deaths server-wide with colorful messages
