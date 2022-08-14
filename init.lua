@@ -119,12 +119,19 @@ minetest.register_on_dieplayer(function(player, reason)
     elseif reason["type"] == "fall" then
         minetest.chat_send_all(player_name .. get_message("fall"))
     elseif reason["type"] == "punch" then
+        -- Was the killer a mob or a player?
         local killer_obj = reason["object"]
-        local killer_name = killer_obj:get_luaentity().name
+        local killer_name
+        if minetest.is_player(killer_obj) then
+            killer_name = killer_obj:get_player_name()
+        else
+            killer_name = killer_obj:get_luaentity().name
+            killer_name = split_mt_object_name(killer_name)
+        end
+
         if killer_name ~= nil then
-            local obj_name_pretty = split_mt_object_name(killer_name)
             minetest.chat_send_all(
-                player_name .. get_message("killed_by") .. obj_name_pretty .. "."
+                player_name .. get_message("killed_by") .. killer_name .. "."
             )
         else
             minetest.chat_send_all(player_name .. get_message("punch"))
