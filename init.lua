@@ -80,15 +80,10 @@ function get_message(mtype)
     end
 end
 
-local function tchelper(first, rest)
-   return first:upper()..rest:lower()
-end
-
-local function get_pretty_obj_name(input)
-    -- Split/Title case a "mod:name" string
+local function split_mt_object_name(input)
+    -- Split a "mod:name" string
     local _, obj = string.match(input, "(.*):(.*)")
     local name_pretty = string.gsub(obj, "_", " ")
-    name_pretty = name_pretty:gsub("(%a)([%w_']*)", tchelper)
 
     return name_pretty
 end
@@ -110,7 +105,7 @@ minetest.register_on_dieplayer(function(player, reason)
             -- a last-ditch effort. Strip the mod name from the item and
             -- sentence-case it to make it seem a little more natural.
             if reason["node"] ~= nil then
-                local obj_name_pretty = get_pretty_obj_name(reason["node"])
+                local obj_name_pretty = split_mt_object_name(reason["node"])
                 minetest.chat_send_all(
                     player_name .. get_message("killed_by") .. obj_name_pretty .. "."
                 )
@@ -127,7 +122,7 @@ minetest.register_on_dieplayer(function(player, reason)
         local killer_obj = reason["object"]
         local killer_name = killer_obj:get_luaentity().name
         if killer_name ~= nil then
-            local obj_name_pretty = get_pretty_obj_name(killer_name)
+            local obj_name_pretty = split_mt_object_name(killer_name)
             minetest.chat_send_all(
                 player_name .. get_message("killed_by") .. obj_name_pretty .. "."
             )
