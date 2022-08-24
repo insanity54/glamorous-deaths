@@ -68,10 +68,6 @@ messages.punch = {
     " got hit hard."
 }
 
-messages.killed_by = {
-    " died by ",
-}
-
 local function get_message(mtype)
     if RANDOM_MESSAGES then
         return messages[mtype][math.random(1, #messages[mtype])]
@@ -90,9 +86,11 @@ end
 
 minetest.register_on_dieplayer(function(player, reason)
     local player_name = player:get_player_name()
+    local was_were = "was"  -- to be changed if in singleplayer
 
     if minetest.is_singleplayer() then
         player_name = "You"
+        was_were = "were"
     end
 
     if reason["type"] == "node_damage" then
@@ -107,7 +105,7 @@ minetest.register_on_dieplayer(function(player, reason)
             if reason["node"] ~= nil then
                 local obj_name_pretty = split_mt_object_name(reason["node"])
                 minetest.chat_send_all(
-                    player_name .. get_message("killed_by") .. obj_name_pretty .. "."
+                    player_name .. " " .. was_were .. " killed by " .. obj_name_pretty .. "."
                 )
             else
                 minetest.chat_send_all(player_name .. " died.")
@@ -131,7 +129,7 @@ minetest.register_on_dieplayer(function(player, reason)
 
         if killer_name ~= nil then
             minetest.chat_send_all(
-                player_name .. get_message("killed_by") .. killer_name .. "."
+                player_name .. " " .. was_were .. " killed by " .. killer_name .. "."
             )
         else
             minetest.chat_send_all(player_name .. get_message("punch"))
