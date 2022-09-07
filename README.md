@@ -27,7 +27,8 @@ GPLv3 (see [LICENSE](LICENSE))
 ## Installation
 
 There are no dependencies, so merely install via the Minetest content manager
-or [follow the official instructions to install mods](https://wiki.minetest.net/Installing_Mods).
+or [download from ContentDB](https://content.minetest.net/packages/mixer/glamorous_deaths/) and
+[follow the official instructions to install mods](https://wiki.minetest.net/Installing_Mods).
 
 ## Submitting issues
 
