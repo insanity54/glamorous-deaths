@@ -19,8 +19,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --]]
 
-local title = "Glamorous Deaths"
-local version = "0.1.0"
 local mname = minetest.get_current_modname()
 
 dofile(minetest.get_modpath(mname).."/settings.txt")
@@ -139,5 +137,3 @@ minetest.register_on_dieplayer(function(player, reason)
     end
 
 end)
-
-print("[Mod] "..title.." ["..version.."] ["..mname.."] loaded.")
