@@ -19,7 +19,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 --]]
 
+local title = "Glamorous Deaths"
+local version = "0.1.0"
 local mname = minetest.get_current_modname()
+local matterbridge_sender = 'SERVER'
 
 dofile(minetest.get_modpath(mname).."/settings.txt")
 
@@ -93,27 +96,49 @@ minetest.register_on_dieplayer(function(player, reason)
 
     if reason["type"] == "node_damage" then
         if reason["node"]:find("lava") then
-            minetest.chat_send_all(player_name .. get_message("lava"))
+            local message = player_name .. get_message("lava")
+        minetest.chat_send_all(message)
+        if yl_matterbridge ~= nil then
+            yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+        end
         elseif reason["node"]:match("fire") or reason["node"]:match("flame") then
-            minetest.chat_send_all(player_name .. get_message("fire"))
+        local message = player_name..get_message("fire")
+        minetest.chat_send_all(message)
+        if yl_matterbridge ~= nil then
+            yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+        end
         else
             -- Try to make something out of the node that killed the player as
             -- a last-ditch effort. Strip the mod name from the item and
             -- sentence-case it to make it seem a little more natural.
             if reason["node"] ~= nil then
                 local obj_name_pretty = split_mt_object_name(reason["node"])
-                minetest.chat_send_all(
-                    player_name .. " " .. was_were .. " killed by " .. obj_name_pretty .. "."
-                )
+                local message = player_name .. " " .. was_were .. " killed by " .. obj_name_pretty .. "."
+                minetest.chat_send_all(message)
+                if yl_matterbridge ~= nil then
+                    yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+                end
             else
-                minetest.chat_send_all(player_name .. " died.")
+                local message = player_name .. " died."
+                minetest.chat_send_all(message)
+                if yl_matterbridge ~= nil then
+                    yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+                end
             end
 
         end
     elseif reason["type"] == "drown" then
-        minetest.chat_send_all(player_name .. get_message("water"))
+        local message = player_name .. get_message("water")
+        minetest.chat_send_all(message)
+        if yl_matterbridge ~= nil then
+            yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+        end
     elseif reason["type"] == "fall" then
-        minetest.chat_send_all(player_name .. get_message("fall"))
+        local message = player_name .. get_message("fall")
+        minetest.chat_send_all(message)
+        if yl_matterbridge ~= nil then
+            yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+        end
     elseif reason["type"] == "punch" then
         -- Was the killer a mob or a player?
         local killer_obj = reason["object"]
@@ -126,14 +151,26 @@ minetest.register_on_dieplayer(function(player, reason)
         end
 
         if killer_name ~= nil then
-            minetest.chat_send_all(
-                player_name .. " " .. was_were .. " killed by " .. killer_name .. "."
-            )
+            local message = player_name .. " " .. was_were .. " killed by " .. killer_name .. "."
+            minetest.chat_send_all(message)
+            if yl_matterbridge ~= nil then
+                yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+            end
         else
-            minetest.chat_send_all(player_name .. get_message("punch"))
+        local message = player_name..get_message("punch")
+            minetest.chat_send_all(message)
+            if yl_matterbridge ~= nil then
+                yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+            end
         end
     else
-        minetest.chat_send_all(player_name .. " died.")
+    local message = player_name.." died."
+        minetest.chat_send_all(message)
+        if yl_matterbridge ~= nil then
+            yl_matterbridge.send_to_bridge(matterbridge_sender, message)
+        end
     end
 
 end)
+
+print("[Mod] "..title.." ["..version.."] ["..mname.."] loaded.")
