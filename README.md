@@ -1,5 +1,7 @@
 # Glamorous Deaths
 
+fork of https://git.sr.ht/~ainola/minetest-glamorous-deaths/
+
 ![Logo](logo.png)
 
 ![Screenshot](screenshot.png)
@@ -20,6 +22,8 @@ use. For instance, falling in lava will generate different messages than
 drowning. Additionally, if the player is killed by another player or entity
 (such as a mob) then it will display the name in a human-friendly way.
 
+`yl_matterbridge` integration (optional dependency) by CJ_Clippy
+
 ## License
 
 GPLv3 (see [LICENSE](LICENSE))
@@ -29,7 +33,3 @@ GPLv3 (see [LICENSE](LICENSE))
 There are no dependencies, so merely install via the Minetest content manager
 or [download from ContentDB](https://content.minetest.net/packages/mixer/glamorous_deaths/) and
 [follow the official instructions to install mods](https://wiki.minetest.net/Installing_Mods).
-
-## Submitting issues
-
-The project is hosted on [sh.rt](https://git.sr.ht/~ainola/minetest-glamorous-deaths/). Report issues on the accompanying [issue tracker](https://todo.sr.ht/~ainola/minetest-glamorous-deaths).
